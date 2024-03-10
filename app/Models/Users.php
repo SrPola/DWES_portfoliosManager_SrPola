@@ -25,9 +25,6 @@
                 foreach ($this -> rows[0] as $propiedad => $valor) {
                     $this -> $propiedad = $valor;
                 }
-                $this -> mensaje = "Usuario encontrado";
-            } else {
-                $this -> mensaje = "Usuario no encontrado";
             }
 
             return $this -> rows[0] ?? null;
@@ -45,8 +42,6 @@
 
         public function get() {}
         public function set() {}
-
         public function edit() {}
-
         public function delete() {}  
     }

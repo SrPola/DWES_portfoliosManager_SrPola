@@ -8,14 +8,29 @@
         public function loginAction() {
             if (isset($_POST) && !empty($_POST)) {
                 $user = Users::getInstancia();
-                if ($user->login($_POST)) {
+                if ($user->login($_POST) != null) {
                     $_SESSION["perfil"] = "usuario";
+                    $_SESSION["usuario"] = [
+                        "id" => $user->id,
+                        "name" => $user->name,
+                        "surname" => $user->surname,
+                        "photo" => $user->photo,
+                        "categoria"=> $user->categoria_profesional,
+                        "email" => $user->email,
+                        "resumen" => $user->profile_summary,
+                        "visible" => $user->visible,
+                        "updated_at" => $user->updated_at,
+                    ];
+                    header("Location: /");
                 } else {
-                    die("Usuario o contraseña incorrectos");
+                    $message = "Usuario o contraseña incorrectos";
                 }
-                header("Location: /");
             }
-            $this->renderHTML("../app/Views/login_view.php");
+
+            $data = [
+                "message" => $message ?? "",
+            ];
+            $this->renderHTML("../app/Views/login_view.php", $data);
         }
 
         public function registerAction() {

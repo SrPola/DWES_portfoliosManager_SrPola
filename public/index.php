@@ -10,6 +10,16 @@
 
     if (!isset($_SESSION['perfil'])) {
         $_SESSION['perfil'] = "invitado";
+        $_SESSION['usuario'] = [
+            "name" => "Invitado",
+            "surname" => "",
+            "photo" => "",
+            "categoria" => "",
+            "email" => "",
+            "resumen" => "",
+            "visible" => "",
+            "updated_at" => ""
+        ];
     }
 
     $router = new Router();
@@ -17,7 +27,7 @@
         "name" => "home", // Nombre de la ruta
         "path" => "/^\/$/", // Expresión regular con la que extraemos la ruta de la URL
         "action" => [IndexController::class, "indexAction"], // Clase y metedo que se ejecuta cuando se busque esa ruta
-        "auth" => ["invitado", "usuario"]) // Perfiles de autenticación que pueden acceder
+        "auth" => ["usuario"]) // Perfiles de autenticación que pueden acceder
     );
 
     $router->add(array(
@@ -41,6 +51,20 @@
         "auth" => ["invitado"])
     );
 
+    $router->add(array(
+        "name" => "Editar",
+        "path" => "/^\/edit\/(user|job|project|skill|social)\/(0-9)+$/", 
+        "action" => [IndexController::class, "editarAction"], 
+        "auth" => ["usuario"])
+    );
+
+    $router->add(array(
+        "name" => "Crear",
+        "path" => "/^\/add\/(job|project|skill|social)$/", 
+        "action" => [IndexController::class, "addAction"], 
+        "auth" => ["usuario"])
+    );
+
     $request = $_SERVER['REQUEST_URI']; // Recoje URL
     $route = $router->match($request); // Busca en todas las rutas hasta encontrar cual coincide con la URL
     
@@ -50,8 +74,10 @@
             $classMethod = $route['action'][1];
             $object = new $className;
             $object->$classMethod($request);
-        } else {
+        } elseif ($_SESSION['perfil'] != "invitado") {
             header("Location: /");
+        } else {
+            header("Location: /login");
         }
     } else {
         exit(http_response_code(404));
