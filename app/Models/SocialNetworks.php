@@ -20,8 +20,11 @@
             return $this->rows ?? "";
         }
 
-        public function get() {
-
+        public function get($id) {
+            $this->query = "SELECT * FROM social_networks WHERE id = :id";
+            $this->params["id"] = $id;
+            $this->get_results_from_query();
+            return $this->rows ?? "";
         }
         public function set($datos) {
             $this->query = "INSERT INTO social_networks (name, url, user_id) VALUES (:name, :url, :user_id)";
@@ -32,10 +35,18 @@
             ];
             $this->get_results_from_query();
         }
-        public function edit() {
-
+        public function edit($id, $datos) {
+            $this->query = "UPDATE social_networks SET name = :name, url = :url WHERE id = :id";
+            $this->params = [
+                "id" => $id,
+                "name" => $datos["name"],
+                "url" => $datos["url"]
+            ];
+            $this->get_results_from_query();
         }
-        public function delete() {
-            
+        public function delete($id) {
+            $this->query = "DELETE FROM social_networks WHERE id = :id";
+            $this->params["id"] = $id;
+            $this->get_results_from_query();
         }
     }

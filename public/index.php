@@ -53,8 +53,8 @@
 
     $router->add(array(
         "name" => "Editar",
-        "path" => "/^\/edit\/(user|job|project|skill|social)\/(0-9)+$/", 
-        "action" => [IndexController::class, "editarAction"], 
+        "path" => "/^\/edit\/(job|project|skill|social)\/([0-9]+)$/", 
+        "action" => [IndexController::class, "editAction"], 
         "auth" => ["usuario"])
     );
 
@@ -62,6 +62,13 @@
         "name" => "Crear",
         "path" => "/^\/add\/(job|project|skill|social)$/", 
         "action" => [IndexController::class, "addAction"], 
+        "auth" => ["usuario"])
+    );
+
+    $router->add(array(
+        "name" => "Delete",
+        "path" => "/^\/delete\/(job|project|skill|social)\/([0-9]+)$/",
+        "action" => [IndexController::class, "delAction"], 
         "auth" => ["usuario"])
     );
 

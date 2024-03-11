@@ -26,6 +26,7 @@
             $this->get_results_from_query();
             return $this->rows ?? "";
         }
+
         public function set($datos) {
             $this->query = "INSERT INTO jobs (title, description, start_date, finish_date, achievements, user_id) VALUES (:title, :description, :start_date, :finish_date, :achievements, :user_id)";
             $this->params = [
@@ -38,10 +39,23 @@
             ];
             $this->get_results_from_query();
         }
-        public function edit() {
 
+        public function edit($id, $datos) {
+            $this->query = "UPDATE jobs SET title = :title, description = :description, start_date = :start_date, finish_date = :finish_date, achievements = :achievements WHERE id = :id";
+            $this->params = [
+                "id" => $id,
+                "title" => $datos["title"],
+                "description" => $datos["description"],
+                "start_date" => $datos["start_date"],
+                "finish_date" => $datos["finish_date"],
+                "achievements" => $datos["achievements"]
+            ];
+            $this->get_results_from_query();
         }
-        public function delete() {
-            
+
+        public function delete($id) {
+            $this->query = "DELETE FROM jobs WHERE id = :id";
+            $this->params["id"] = $id;
+            $this->get_results_from_query();
         }
     }

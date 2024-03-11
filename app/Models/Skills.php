@@ -35,6 +35,19 @@
             ];
             $this->get_results_from_query();
         }
-        public function edit() {}
-        public function delete() {}
+        
+        public function edit($id, $datos) {
+            $this->query = "UPDATE skills SET name = :name WHERE id = :id";
+            $this->params = [
+                "id" => $id,
+                "name" => $datos["name"]
+            ];
+            $this->get_results_from_query();
+        }
+
+        public function delete($id) {
+            $this->query = "DELETE FROM skills WHERE id = :id";
+            $this->params["id"] = $id;
+            $this->get_results_from_query();
+        }
     }

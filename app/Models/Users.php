@@ -43,5 +43,9 @@
         public function get() {}
         public function set() {}
         public function edit() {}
-        public function delete() {}  
+        public function delete($id) {
+            $this->query = "DELETE FROM users WHERE id = :id";
+            $this->params["id"] = $id;
+            $this->get_results_from_query();
+        }  
     }
